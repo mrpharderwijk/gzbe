@@ -30,8 +30,9 @@ export default {
       name: 'rtl nieuws',
       serviceUrls: {
         type: 'API',
-        general:
-          'https://newsapi.org/v2/top-headlines?sources=rtl-nieuws&apiKey=daecdef5609f42bdbdd4132b6a50a783',
+        general: `https://newsapi.org/v2/top-headlines?sources=rtl-nieuws&apiKey=${
+          process.env.NEWS_API_KEY
+        }`,
       },
     },
   ],
