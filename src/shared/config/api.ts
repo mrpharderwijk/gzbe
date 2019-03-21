@@ -35,5 +35,15 @@ export default {
         }`,
       },
     },
+    {
+      id: 'geenstijl',
+      link: 'https://www.geenstijl.nl',
+      logo: 'geenstijl',
+      name: 'geenstijl',
+      serviceUrls: {
+        type: 'RSS',
+        general: 'https://www.geenstijl.nl/feeds/recent.atom',
+      },
+    },
   ],
 };

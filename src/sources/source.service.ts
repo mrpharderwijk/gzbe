@@ -10,6 +10,8 @@ import { ObjectHelper } from '../shared/helpers/object.helper';
 import { ApiSource } from '../shared/models/api/api-source.model';
 import { NuArticle } from '../shared/models/article/nu-article.model';
 import { NewsApiArticle } from '../shared/models/article/news-api-article.model';
+import { stringLiteral } from '@babel/types';
+import { GsArticle } from '../shared/models/article/geenstijl-article.model';
 
 @Injectable()
 export class SourceService {
@@ -27,7 +29,13 @@ export class SourceService {
     const observableStream = this.configService
       .get('api')
       .sources.map((source: ApiSource) => {
-        return this.retrieveArticles(source.id, categoryName);
+        const hasCategoryUrl = Object.keys(source.serviceUrls).find(
+          key => categoryName === key,
+        );
+
+        return hasCategoryUrl
+          ? this.retrieveArticles(source.id, categoryName)
+          : of([]);
       });
 
     const response = forkJoin(
@@ -86,6 +94,8 @@ export class SourceService {
               return this.nosMapper(apiSource, feedResponse.items);
             case 'nu-nl':
               return this.nuNlMapper(apiSource, feedResponse.items);
+            case 'geenstijl':
+              return this.geenStijlMapper(apiSource, feedResponse.items);
           }
         }),
       );
@@ -120,12 +130,14 @@ export class SourceService {
       source: {
         id: apiSource.id,
         name: apiSource.name,
+        logo: apiSource.logo,
       },
       author: 'nos',
       categories: [],
       // TODO: textHelper...
-      description: TextHelper.truncate(
-        item.content.replace(/<\/?[^>]+(>|$)/g, ''),
+      content: item.content,
+      contentSnippet: TextHelper.truncate(
+        item.contentSnippet.replace(/<\/?[^>]+(>|$)/g, ''),
         40,
         true,
       ),
@@ -154,10 +166,12 @@ export class SourceService {
       source: {
         id: apiSource.id,
         name: apiSource.name,
+        logo: apiSource.logo,
       },
       author: item.creator,
       categories: item.categories,
-      description: item.content,
+      content: item.content,
+      contentSnippet: item.content,
       image: {
         type: ObjectHelper.hasPath(item, 'enclosure.type')
           ? item.enclosure.type
@@ -186,10 +200,12 @@ export class SourceService {
       source: {
         id: apiSource.id,
         name: apiSource.name,
+        logo: apiSource.logo,
       },
       author: item.author,
       categories: [],
-      description: item.description,
+      content: item.description,
+      contentSnippet: item.description,
       image: {
         type: null,
         url: item.urlToImage,
@@ -197,6 +213,28 @@ export class SourceService {
       },
       isoDate: item.publishedAt,
       link: item.url,
+      title: item.title,
+    }));
+  }
+
+  private geenStijlMapper(apiSource: ApiSource, gsArticles: GsArticle[]) {
+    return gsArticles.map(item => ({
+      source: {
+        id: apiSource.id,
+        name: apiSource.name,
+        logo: apiSource.logo,
+      },
+      author: item.author,
+      categories: [],
+      content: item.content,
+      contentSnippet: item.contentSnippet,
+      image: {
+        type: null,
+        url: null,
+        rights: null,
+      },
+      isoDate: item.isoDate,
+      link: item.link,
       title: item.title,
     }));
   }

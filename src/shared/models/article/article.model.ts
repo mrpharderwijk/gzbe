@@ -5,10 +5,12 @@ export interface Article {
   source: {
     id: string;
     name: string;
+    logo: string;
   };
   author: string;
   categories: string[] | any;
-  description: string;
+  content: string;
+  contentSnippet: string;
   image: ArticleImage;
   isoDate: string;
   link: string;
