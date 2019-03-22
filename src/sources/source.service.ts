@@ -12,6 +12,7 @@ import { NuArticle } from '../shared/models/article/nu-article.model';
 import { NewsApiArticle } from '../shared/models/article/news-api-article.model';
 import { stringLiteral } from '@babel/types';
 import { GsArticle } from '../shared/models/article/geenstijl-article.model';
+import { TweakersArticle } from '../shared/models/article/tweakers-article.model';
 
 @Injectable()
 export class SourceService {
@@ -24,22 +25,34 @@ export class SourceService {
    * Retrieves all general news headlines from all news sources
    * @param categoryName
    */
-  findAllHeadlines(categoryName: string = 'general'): Observable<Article[]> {
-    // Creates an array of Observables for the forJoin to use
-    const observableStream = this.configService
-      .get('api')
-      .sources.map((source: ApiSource) => {
-        const hasCategoryUrl = Object.keys(source.serviceUrls).find(
-          key => categoryName === key,
-        );
+  findAllHeadlines(sourceId: string = 'all'): Observable<Article[]> {
+    let observableStream = of([]);
 
-        return hasCategoryUrl
-          ? this.retrieveArticles(source.id, categoryName)
-          : of([]);
-      });
+    const sourceFound = this.configService
+      .get('api')
+      .sources.find((source: ApiSource) => source.id === sourceId);
+
+    /**
+     * Create observableStream with all sources
+     */
+    if (!sourceFound && sourceId === 'all') {
+      observableStream = this.configService
+        .get('api')
+        .sources.map((source: ApiSource) => {
+          return this.retrieveArticles(source.id);
+        });
+    }
+
+    /**
+     * Create observableStream with only the found source
+     */
+    if (sourceFound && sourceId !== 'all') {
+      observableStream = this.retrieveArticles(sourceFound.id);
+    }
 
     const response = forkJoin(
       observableStream,
+      // this.retrieveArticles('tweakers', categoryName),
       // merges all the results in one array
       (...results: any[]) =>
         results.reduce((acc, currResponse) => {
@@ -96,6 +109,8 @@ export class SourceService {
               return this.nuNlMapper(apiSource, feedResponse.items);
             case 'geenstijl':
               return this.geenStijlMapper(apiSource, feedResponse.items);
+            case 'tweakers':
+              return this.tweakersMapper(apiSource, feedResponse.items);
           }
         }),
       );
@@ -217,6 +232,11 @@ export class SourceService {
     }));
   }
 
+  /**
+   * Maps the GeenStijl RSS articles to the GZ article
+   * @param apiSource
+   * @param gsArticles
+   */
   private geenStijlMapper(apiSource: ApiSource, gsArticles: GsArticle[]) {
     return gsArticles.map(item => ({
       source: {
@@ -226,6 +246,28 @@ export class SourceService {
       },
       author: item.author,
       categories: [],
+      content: item.content,
+      contentSnippet: item.contentSnippet,
+      image: {
+        type: null,
+        url: null,
+        rights: null,
+      },
+      isoDate: item.isoDate,
+      link: item.link,
+      title: item.title,
+    }));
+  }
+
+  private tweakersMapper(apiSource: ApiSource, twArticles: TweakersArticle[]) {
+    return twArticles.map(item => ({
+      source: {
+        id: apiSource.id,
+        name: apiSource.name,
+        logo: apiSource.logo,
+      },
+      author: item.author,
+      categories: item.categories,
       content: item.content,
       contentSnippet: item.contentSnippet,
       image: {

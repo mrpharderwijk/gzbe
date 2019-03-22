@@ -45,5 +45,15 @@ export default {
         general: 'https://www.geenstijl.nl/feeds/recent.atom',
       },
     },
+    {
+      id: 'tweakers',
+      link: 'https://www.tweakers.net',
+      logo: 'tweakers',
+      name: 'tweakers',
+      serviceUrls: {
+        type: 'RSS',
+        general: 'http://feeds.feedburner.com/tweakers/nieuws',
+      },
+    },
   ],
 };

@@ -23,15 +23,10 @@ export class SourcesController {
     return this.sourceService.findAllHeadlines();
   }
 
-  @Get('headlines/:category')
-  findAllHeadlinesByCategory(
-    @Param('category') cat: string,
+  @Get(':sourceId/headlines')
+  findAllHeadlinesBySource(
+    @Param('sourceId') sourceId: string,
   ): Observable<Article[]> {
-    return this.sourceService.findAllHeadlines(cat);
+    return this.sourceService.findAllHeadlines(sourceId);
   }
-
-  // @Get(':id/headlines')
-  // findHeadlinesBySource(@Param() params: { id: string }): Observable<any> {
-  //   return this.sourceService.findHeadlinesBySource(params.id);
-  // }
 }
