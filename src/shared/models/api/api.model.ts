@@ -1,6 +1,6 @@
-import { ApiSource } from './api-source.model';
+import { ApiFeed } from './api-feed.model';
 
 export interface Api {
   version: string;
-  sources: ApiSource[];
+  feeds: ApiFeed;
 }

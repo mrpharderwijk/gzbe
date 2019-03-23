@@ -7,11 +7,11 @@ export interface Article {
     name: string;
     logo: string;
   };
-  author: string;
-  categories: string[] | any;
+  author?: string;
+  categories?: string[] | any;
   content: string;
   contentSnippet: string;
-  image: ArticleImage;
+  image?: ArticleImage;
   isoDate: string;
   link: string;
   title: string;

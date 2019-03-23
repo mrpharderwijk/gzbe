@@ -1,5 +1,5 @@
 export interface ServiceUrl {
-  rss: boolean;
+  type: string;
   general: string;
   sport: string;
 }

@@ -14,6 +14,8 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { AuthService } from './auth/auth.service';
 import { SourcesController } from './sources/sources.controller';
 import { SourceService } from './sources/source.service';
+import { FeedService } from './feed/feed.service';
+import { FeedsController } from './feed/feeds.controller';
 import * as path from 'path';
 
 @Module({
@@ -46,6 +48,7 @@ import * as path from 'path';
     AuthController,
     UsersController,
     SourcesController,
+    FeedsController,
   ],
   providers: [
     AuthService,
@@ -55,6 +58,7 @@ import * as path from 'path';
     UserService,
     ...usersProviders,
     SourceService,
+    FeedService,
   ],
   exports: [AuthService, ...databaseProviders, UserService, ...usersProviders],
 })
