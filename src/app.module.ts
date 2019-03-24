@@ -12,12 +12,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth/auth.controller';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { AuthService } from './auth/auth.service';
-import { SourcesController } from './sources/sources.controller';
-import { SourceService } from './sources/source.service';
 import { NewsController } from './news/news.controller';
 import { NewsService } from './news/news.service';
 import { EmergenciesController } from './emergencies/emergencies.controller';
 import { EmergenciesService } from './emergencies/emergencies.service';
+import { TechController } from './tech/tech.controller';
+import { TechService } from './tech/tech.service';
 import * as path from 'path';
 
 @Module({
@@ -49,9 +49,9 @@ import * as path from 'path';
     AppController,
     AuthController,
     UsersController,
-    SourcesController,
     NewsController,
     EmergenciesController,
+    TechController,
   ],
   providers: [
     AuthService,
@@ -60,9 +60,9 @@ import * as path from 'path';
     JwtStrategy,
     UserService,
     ...usersProviders,
-    SourceService,
     NewsService,
     EmergenciesService,
+    TechService,
   ],
   exports: [AuthService, ...databaseProviders, UserService, ...usersProviders],
 })

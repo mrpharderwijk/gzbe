@@ -1,23 +1,23 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { NewsService } from './news.service';
+import { TechService } from './tech.service';
 import { Article } from '../shared/models/article/article.model';
 import { NewsSource } from '../shared/models/api/news/news-source.model';
 
-@Controller('news')
-export class NewsController {
-  constructor(private newsService: NewsService) {}
+@Controller('tech')
+export class TechController {
+  constructor(private techService: TechService) {}
   /**
    * Get all by feedType
    */
   @Get()
-  findAllNews(): Observable<Article[]> {
-    return this.newsService.findAll();
+  findAllTech(): Observable<Article[]> {
+    return this.techService.findAll();
   }
 
   @Get('sources')
-  findAllNewsSources(): NewsSource[] {
-    return this.newsService.findAllNewsSources();
+  findAllTechSources(): NewsSource[] {
+    return this.techService.findAllTechSources();
   }
 
   /**
@@ -26,6 +26,6 @@ export class NewsController {
    */
   @Get('sources/:sourceId')
   findAllBySource(@Param('sourceId') sourceId: string): Observable<Article[]> {
-    return this.newsService.findAll(sourceId);
+    return this.techService.findAll(sourceId);
   }
 }
