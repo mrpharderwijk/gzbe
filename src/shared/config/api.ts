@@ -1,6 +1,118 @@
 export default {
   version: process.env.API_VERSION,
   feeds: {
+    emergencies: {
+      id: 'alarmeringen',
+      link: 'https://www.alarmeringen.nl',
+      logo: 'alarmeringen',
+      name: 'alarmeringen.nl',
+      serviceUrls: {
+        type: 'RSS',
+        url: 'https://www.alarmeringen.nl/feeds/region',
+        regions: [
+          {
+            id: 'amsterdam-amstelland',
+            name: 'Amsterdam Amstelland',
+          },
+          {
+            id: 'brabant-noord',
+            name: 'Brabant Noord',
+          },
+          {
+            id: 'brabant-zuidoost',
+            name: 'Brabant Zuidoost',
+          },
+          {
+            id: 'drenthe',
+            name: 'Drenthe',
+          },
+          {
+            id: 'flevoland',
+            name: 'Flevoland',
+          },
+          {
+            id: 'friesland',
+            name: 'Friesland',
+          },
+          {
+            id: 'gelderland-midden',
+            name: 'Gelderland Midden',
+          },
+          {
+            id: 'gelderland-zuid',
+            name: 'Gelderland-Zuid',
+          },
+          {
+            id: 'gooi-en-vechtstreek',
+            name: 'Gooi en Vechtstreek',
+          },
+          {
+            id: 'groningen',
+            name: 'Groningen',
+          },
+          {
+            id: 'haaglanden',
+            name: 'Haaglanden',
+          },
+          {
+            id: 'hollands-midden',
+            name: 'Hollands Midden',
+          },
+          {
+            id: 'ijsselland',
+            name: 'IJsselland',
+          },
+          {
+            id: 'kennemerland',
+            name: 'Kennemerland',
+          },
+          {
+            id: 'limburg-noord',
+            name: 'Limburg Noord',
+          },
+          {
+            id: 'limburg-zuid',
+            name: 'Limburg Zuid',
+          },
+          {
+            id: 'midden-en-west-brabant',
+            name: 'Midden- en West-Brabant',
+          },
+          {
+            id: 'noord-en-oost-gelderland',
+            name: 'Noord en Oost-Gelderland',
+          },
+          {
+            id: 'noord-holland-noord',
+            name: 'Noord-Holland Noord',
+          },
+          {
+            id: 'rotterdam-rijnmond',
+            name: 'Rotterdam-Rijnmond',
+          },
+          {
+            id: 'twente',
+            name: 'Twente',
+          },
+          {
+            id: 'utrecht',
+            name: 'Utrecht',
+          },
+          {
+            id: 'zaanstreek-waterland',
+            name: 'Zaanstreek-Waterland',
+          },
+          {
+            id: 'zeeland',
+            name: 'Zeeland',
+          },
+          {
+            id: 'zuid-holland-zuid',
+            name: 'Zuid-Holland Zuid',
+          },
+        ],
+      },
+    },
     news: {
       sources: [
         {
@@ -55,27 +167,6 @@ export default {
           serviceUrls: {
             type: 'RSS',
             general: 'http://feeds.feedburner.com/tweakers/nieuws',
-          },
-        },
-      ],
-    },
-    emergencies: {
-      sources: [
-        {
-          id: 'alarmeringen',
-          link: 'https://www.alarmeringen.nl',
-          logo: 'alarmeringen',
-          name: 'alarmeringen.nl',
-          serviceUrls: {
-            type: 'RSS',
-            general:
-              'https://www.alarmeringen.nl/feeds/region/gooi-en-vechtstreek.rss',
-            amsterdamAmstelland:
-              'https://www.alarmeringen.nl/feeds/region/amsterdam-amstelland.rss',
-            brabantNoord:
-              'https://www.alarmeringen.nl/feeds/region/brabant-noord.rss',
-            brabantZuidOost:
-              'https://www.alarmeringen.nl/feeds/region/brabant-zuidoost.rss',
           },
         },
       ],

@@ -1,4 +1,4 @@
-export interface ServiceUrl {
+export interface NewsServiceUrls {
   type: string;
   general: string;
   sport: string;

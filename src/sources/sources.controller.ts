@@ -13,8 +13,12 @@ export class SourcesController {
     return this.sourceService.findAllSources();
   }
 
+  /**
+   * Get sources by feed type
+   * @param feedType
+   */
   @Get(':feedType')
-  findSourceById(@Param('feedType') feedType: string) {
+  findSourcesByFeedType(@Param('feedType') feedType: string) {
     return this.sourceService.findSourcesByFeedType(feedType);
   }
 }

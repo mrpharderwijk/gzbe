@@ -1,4 +1,4 @@
-import { ApiSource } from '../models/api/api-source.model';
+import { NewsSource } from '../models/api/news/news-source.model';
 import { NosArticle } from '../models/article/nos-article.model';
 import { Article } from '../models/article/article.model';
 import { TextHelper } from './text.helper';
@@ -8,6 +8,7 @@ import { NewsApiArticle } from '../models/article/news-api-article.model';
 import { GsArticle } from '../models/article/geenstijl-article.model';
 import { AlarmeringenArticle } from '../models/article/alarmeringen-article.model';
 import { TweakersArticle } from '../models/article/tweakers-article.model';
+import { EmergenciesFeed } from '../models/api/emergencies/emergencies-feed.model';
 
 // Do not move or remove the @dynamic comment!
 // @dynamic
@@ -17,7 +18,10 @@ export class FeedHelper {
    * @param apiSource
    * @param nosArticles
    */
-  static nosMapper(apiSource: ApiSource, nosArticles: NosArticle[]): Article[] {
+  static nosMapper(
+    apiSource: NewsSource,
+    nosArticles: NosArticle[],
+  ): Article[] {
     return nosArticles.map((item: NosArticle) => ({
       source: {
         id: apiSource.id,
@@ -53,7 +57,7 @@ export class FeedHelper {
    * @param apiSource
    * @param nuArticles
    */
-  static nuNlMapper(apiSource: ApiSource, nuArticles: NuArticle[]): Article[] {
+  static nuNlMapper(apiSource: NewsSource, nuArticles: NuArticle[]): Article[] {
     return nuArticles.map(item => ({
       source: {
         id: apiSource.id,
@@ -85,7 +89,7 @@ export class FeedHelper {
    * @param rtlArticles
    */
   static rtlNieuwsMapper(
-    apiSource: ApiSource,
+    apiSource: NewsSource,
     rtlArticles: NewsApiArticle[],
   ): Article[] {
     return rtlArticles.map(item => ({
@@ -114,7 +118,7 @@ export class FeedHelper {
    * @param apiSource
    * @param gsArticles
    */
-  static geenStijlMapper(apiSource: ApiSource, gsArticles: GsArticle[]) {
+  static geenStijlMapper(apiSource: NewsSource, gsArticles: GsArticle[]) {
     return gsArticles.map(item => ({
       source: {
         id: apiSource.id,
@@ -141,7 +145,7 @@ export class FeedHelper {
    * @param apiSource
    * @param gsArticles
    */
-  static tweakersMapper(apiSource: ApiSource, twArticles: TweakersArticle[]) {
+  static tweakersMapper(apiSource: NewsSource, twArticles: TweakersArticle[]) {
     return twArticles.map(item => ({
       source: {
         id: apiSource.id,
@@ -164,7 +168,7 @@ export class FeedHelper {
   }
 
   static alarmeringenMapper(
-    apiSource: ApiSource,
+    apiSource: EmergenciesFeed,
     alArticles: AlarmeringenArticle[],
   ) {
     return alArticles.map(item => ({

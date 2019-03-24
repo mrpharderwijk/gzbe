@@ -1,5 +1,4 @@
 import { ArticleImage } from './article-image.model';
-import { ApiSource } from '../api/api-source.model';
 
 export interface Article {
   source: {

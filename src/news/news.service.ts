@@ -1,17 +1,17 @@
 import { Injectable, HttpService } from '@nestjs/common';
-import { Observable, of, from, EMPTY, forkJoin } from 'rxjs';
 import { ConfigService } from 'nestjs-config';
-import { ApiSource } from '../shared/models/api/api-source.model';
 import { ObjectHelper } from '../shared/helpers/object.helper';
+import { Observable, forkJoin, from, of, EMPTY } from 'rxjs';
+import { Article } from '../shared/models/article/article.model';
+import { NewsFeed } from '../shared/models/api/news/news-feed.model';
+import { map, catchError } from 'rxjs/operators';
+import { FeedHelper } from '../shared/helpers/feed.helper';
+import { NewsSource } from '../shared/models/api/news/news-source.model';
 
 import * as Parser from 'rss-parser';
-import { map, catchError } from 'rxjs/operators';
-import { Article } from '../shared/models/article/article.model';
-import { FeedHelper } from '../shared/helpers/feed.helper';
-import { ApiFeed } from '../shared/models/api/api-feed.model';
 
 @Injectable()
-export class FeedService {
+export class NewsService {
   constructor(
     private configService: ConfigService,
     private httpService: HttpService,
@@ -21,26 +21,25 @@ export class FeedService {
    * Retrieves all general news headlines from all news sources
    * @param categoryName
    */
-  findAll(type: string, sourceId: string = 'all'): Observable<Article[]> {
+  findAll(sourceId: string = 'all'): Observable<Article[]> {
     const api = this.configService.get('api');
-    if (!ObjectHelper.hasPath(api, `feeds.${type}.sources`)) {
+
+    if (!ObjectHelper.hasPath(api, `feeds.news.sources`)) {
       return;
     }
 
     let observableStream = of([]);
 
-    // Find the source by id
-    const feedType = this.configService.get('api').feeds[type];
-    const sourceFound = feedType.sources.find(
-      (source: ApiSource) => source.id === sourceId,
-    );
-
     /**
      * Create observableStream with all sources
      */
-    if (!sourceFound || sourceId === 'all') {
-      observableStream = feedType.sources.map((source: ApiSource) => {
-        return this.retrieveArticles(feedType, source.id);
+    const newsSource = api.feeds.news.sources.find(
+      (source: NewsSource) => source.id === sourceId,
+    );
+
+    if (!newsSource || sourceId === 'all') {
+      observableStream = api.feeds.news.sources.map((source: NewsSource) => {
+        return this.retrieveArticles(api.feeds.news, source.id);
       });
     }
 
@@ -48,8 +47,8 @@ export class FeedService {
      * Create observableStream with only the found source
      * TODO: handle bad requests
      */
-    if (sourceFound && sourceId !== 'all') {
-      observableStream = this.retrieveArticles(feedType, sourceFound.id);
+    if (newsSource && sourceId !== 'all') {
+      observableStream = this.retrieveArticles(api.feeds.news, newsSource.id);
     }
 
     const response = forkJoin(
@@ -71,12 +70,12 @@ export class FeedService {
    * @param category
    */
   private retrieveArticles(
-    feedType: ApiFeed,
+    newsFeed: NewsFeed,
     id: string,
     category: string = 'general',
   ): Observable<Article[]> {
-    const apiSource = feedType.sources.find(
-      (source: ApiSource) => source.id === id,
+    const apiSource = newsFeed.sources.find(
+      (source: NewsSource) => source.id === id,
     );
     const type = apiSource.serviceUrls.type;
     const url = ObjectHelper.hasPath(apiSource, `serviceUrls.${category}`)
@@ -106,11 +105,6 @@ export class FeedService {
               return FeedHelper.geenStijlMapper(apiSource, feedResponse.items);
             case 'tweakers':
               return FeedHelper.tweakersMapper(apiSource, feedResponse.items);
-            case 'alarmeringen':
-              return FeedHelper.alarmeringenMapper(
-                apiSource,
-                feedResponse.items,
-              );
           }
         }),
       );
@@ -133,5 +127,12 @@ export class FeedService {
         }),
       );
     }
+  }
+
+  /**
+   * Retrieves all news sources
+   */
+  findAllNewsSources(): NewsSource[] {
+    return this.configService.get('api').feeds.news.sources;
   }
 }
