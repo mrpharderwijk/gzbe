@@ -40,6 +40,7 @@
     "typeorm": "^0.2.12",
     "typescript": "^3.3.1",
     "util": "^0.11.1",
+    "xml2json": "^0.11.2",
     "xmldom": "^0.1.27"
   },
   "devDependencies": {

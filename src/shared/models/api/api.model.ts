@@ -6,5 +6,6 @@ export interface Api {
   feeds: {
     emergencies: EmergenciesFeed;
     news: NewsFeed;
+    traffic: TrafficFeed;
   };
 }

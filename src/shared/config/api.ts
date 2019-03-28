@@ -175,5 +175,14 @@ export default {
         },
       ],
     },
+    traffic: {
+      id: 'anwb',
+      link: 'https://www.anwb.nl',
+      logo: 'anwb',
+      name: 'anwb',
+      serviceUrls: {
+        url: 'https://www.anwb.nl/feeds/gethf',
+      },
+    },
   },
 };

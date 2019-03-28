@@ -18,6 +18,8 @@ import { EmergenciesController } from './emergencies/emergencies.controller';
 import { EmergenciesService } from './emergencies/emergencies.service';
 import { TechController } from './tech/tech.controller';
 import { TechService } from './tech/tech.service';
+import { TrafficController } from './traffic/traffic.controller';
+import { TrafficService } from './traffic/traffic.service';
 import * as path from 'path';
 
 @Module({
@@ -52,6 +54,7 @@ import * as path from 'path';
     NewsController,
     EmergenciesController,
     TechController,
+    TrafficController,
   ],
   providers: [
     AuthService,
@@ -63,6 +66,7 @@ import * as path from 'path';
     NewsService,
     EmergenciesService,
     TechService,
+    TrafficService,
   ],
   exports: [AuthService, ...databaseProviders, UserService, ...usersProviders],
 })
